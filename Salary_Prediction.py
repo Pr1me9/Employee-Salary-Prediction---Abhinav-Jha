@@ -33,7 +33,7 @@ model.fit(X_train, y_train)
 model_features = X.columns
 
 # Streamlit UI
-st.title("Salary Prediction App")
+st.markdown("<h1 style='text-align: center;'>💼 Salary Prediction App</h1>", unsafe_allow_html=True)
 
 age = st.slider("Age", 18, 65, 30)
 gender = st.selectbox("Gender", ["Male", "Female", "Other"])
@@ -54,19 +54,23 @@ input_data = {
 }
 input_data.update(job_dict)
 
-# Create DataFrame and align with training features
-input_df = pd.DataFrame([input_data])
+# Button to predict salary
+if st.button("Predict Salary"):
+    # Create DataFrame and align with training features
+    input_df = pd.DataFrame([input_data])
 
-# Ensure all model features are present in input_df
-for col in model_features:
-    if col not in input_df.columns:
-        input_df[col] = 0
+    # Ensure all model features are present
+    for col in model_features:
+        if col not in input_df.columns:
+            input_df[col] = 0
 
-# Reorder columns to match training data
-input_df = input_df[model_features]
+    input_df = input_df[model_features]
 
-# Make prediction
-prediction = model.predict(input_df)[0]
+    # Make prediction
+    prediction = model.predict(input_df)[0]
 
-# Display result
-st.success(f"Estimated Salary: ${prediction:,.2f}")
+    # Display result
+    st.success(f"💰 Estimated Salary: ${prediction:,.2f}")
+
+    # Show balloons!
+    st.balloons()
